@@ -37,7 +37,6 @@ class Circle extends Figure{
     }
     @Override
     boolean checkPoint (int x, int y){
-        return ((this.getX1()-this.getRadius() <= x | this.getX1()+this.getRadius() >= x)
-                & (this.getY1()- this.getRadius() <= y) | (this.getY1()+this.getRadius() >= y));
+        return (Math.pow(x - x1, 2) + Math.pow(y - y1, 2)) <= Math.pow(radius, 2) ;
     }
 }
