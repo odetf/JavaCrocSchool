@@ -7,8 +7,9 @@ class AnnotatedImage {
 
     private final Annotation[] annotations;
 
-    Annotation findByPoint(AnnotatedImage annotatedImage, int x, int y, Annotation annotWithPoint){
-        Annotation annot[] = annotatedImage.annotations;
+    public Annotation findByPoint(int x, int y){
+        Annotation annotWithPoint = null;
+        Annotation annot[] = annotations;
         for (Annotation a:annot){
             if (a.getFigure().checkPoint(x, y) == true){
                 annotWithPoint = a;
@@ -18,8 +19,9 @@ class AnnotatedImage {
         return annotWithPoint;
     }
 
-    Annotation findByLabel(AnnotatedImage annotatedImage, String label, Annotation annotation){
-        Annotation annot[] = annotatedImage.annotations;
+    public Annotation findByLabel(String label){
+        Annotation annotation= null;
+        Annotation annot[] = annotations;
         for (Annotation a:annot){
             if (a.getDescription().contains(label)){
                 annotation = a;
