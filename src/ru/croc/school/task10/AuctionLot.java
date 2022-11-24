@@ -2,12 +2,12 @@ package ru.croc.school.task10;
 
 import java.util.Date;
 
-public class auctionLot {
-    private volatile int currentPrice;
-    private volatile String userName;
+public class AuctionLot {
+    public volatile int currentPrice;
+    public volatile String userName;
     private final Date endTradeDate;
 
-    public auctionLot(int currentPrice, String userName, Date endTradeDate) {
+    public AuctionLot(int currentPrice, String userName, Date endTradeDate) {
         this.currentPrice = currentPrice;
         this.userName = userName;
         this.endTradeDate = endTradeDate;

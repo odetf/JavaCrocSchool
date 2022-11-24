@@ -17,11 +17,6 @@ public class Searching {
         for (int i = 0; i < numOfFlows; i++) {
             threads[i] = new Thread(new checkAllPossiblePasswords(i, numOfFlows, getHashToSeach()));
             threads[i].start();
-            try {
-                threads[i].join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
         System.out.println(truePassword);
     }

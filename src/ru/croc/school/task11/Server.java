@@ -3,14 +3,15 @@ package ru.croc.school.task11;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashSet;
 
 public class Server {
 
     private static String breakWord = "bye"; //когда клиент "прощается" с сервером, тот перестает с ним взаимодействовать
-
+    private static HashSet<String> names = new HashSet<String>(); //хэш
     public static void main(String[] args) {
         try {
-            ServerSocket serverSocket = new ServerSocket(100);
+            ServerSocket serverSocket = new ServerSocket(12322);
             while (true) {
 
                 //соединяем клиента с сервером и запрашиваем никнейм клиента
@@ -55,6 +56,8 @@ public class Server {
                 String message;
                 while ((message = input.readUTF()) != breakWord) {
                     System.out.println("Message from " + nickname + ": "+ message);
+                    output.writeUTF("Message from " + nickname + ": "+ message);
+                    output.flush();
                     Thread.sleep(1000);
                 }
             } catch (IOException e) {
