@@ -9,9 +9,10 @@ public class Server {
 
     private static String breakWord = "bye"; //когда клиент "прощается" с сервером, тот перестает с ним взаимодействовать
     private static HashSet<String> names = new HashSet<String>(); //хэш
+
     public static void main(String[] args) {
         try {
-            ServerSocket serverSocket = new ServerSocket(12322);
+            ServerSocket serverSocket = new ServerSocket(12361);
             while (true) {
 
                 //соединяем клиента с сервером и запрашиваем никнейм клиента
@@ -30,6 +31,7 @@ public class Server {
     //класс для работы с каждым отдельным клиентом
     private static class ClientHandler implements Runnable {
         private Socket clientSocket;
+        private static HashSet<PrintWriter> writers = new HashSet<PrintWriter>(); //список подключенных клиентов
 
         //конструктор для использования на сервере
         public ClientHandler(Socket clientSocket) {
@@ -55,8 +57,8 @@ public class Server {
                 //бесконечно принимаем сообщения от пользователя и выводим их на сервере, пока он не "попрощается" с сервером
                 String message;
                 while ((message = input.readUTF()) != breakWord) {
-                    System.out.println("Message from " + nickname + ": "+ message);
-                    output.writeUTF("Message from " + nickname + ": "+ message);
+                    System.out.println("Message from " + nickname + ": " + message);
+                    output.writeUTF("Message from " + nickname + ": " + message);
                     output.flush();
                     Thread.sleep(1000);
                 }
@@ -65,21 +67,7 @@ public class Server {
             } catch (InterruptedException ex) {
                 System.out.println("The thread was interrupted.");
             }
-                finally {
-                //после "прощания" прекращаем соединение с этим клиентом
-                try {
-                    if (output != null) {
-                        output.close();
-                    }
-
-                    if (input != null) {
-                        input.close();
-                        clientSocket.close();
-                    }
-                } catch (IOException e) {
-                    System.out.println("The thread with the user is closed.");
-                }
-            }
         }
     }
 }
+

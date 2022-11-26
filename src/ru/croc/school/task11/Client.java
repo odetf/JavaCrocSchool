@@ -48,7 +48,7 @@ public class Client {
         public void run() {
             try {
                 while (!client.clientSocket.isOutputShutdown()) {
-                    if (client.bufferedReader.ready()) {
+                    if (client.bufferedReader != null) {
                         System.out.println("Write any message to others.");
                         String clientMessage = client.bufferedReader.readLine();
                         if (clientMessage.equalsIgnoreCase("bye")) {
@@ -72,7 +72,7 @@ public class Client {
     public static void main(String[] args) {
         try (
                 //задаем параметры для входа пользователя: сокет, потоки ввода и вывода, буфер для чтения
-                Socket clientSocket = new Socket("localhost", 12322);
+                Socket clientSocket = new Socket("localhost", 12361);
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
                 DataInputStream inMessage = new DataInputStream(clientSocket.getInputStream());
                 DataOutputStream outMessage = new DataOutputStream(clientSocket.getOutputStream());) {
@@ -95,8 +95,8 @@ public class Client {
             //запускаю потоки для общения и получения данных
             Thread clientWrites = new Thread(new ClientWriting(client));
             Thread clientWaiting = new Thread(new ClientWaiting(client));
-            clientWrites.run();
-            clientWaiting.run();
+            clientWrites.start();
+            clientWaiting.run(); //немного странно, но без этого метода и запуска через run() ничего не работает. далее - все ок
         } catch (IOException ioException) {
             System.out.print("Connections failed.");
         }
