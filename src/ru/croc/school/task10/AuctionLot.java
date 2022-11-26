@@ -14,7 +14,7 @@ public class AuctionLot {
     }
 
     public void setBet(int newCurrentPrice, String userOfferedPrice) {
-        synchronized (this) {
+        {
             if (newCurrentPrice > currentPrice & System.currentTimeMillis() < endTradeDate.getTime()) {
                 this.currentPrice = newCurrentPrice;
                 this.userName = userOfferedPrice;

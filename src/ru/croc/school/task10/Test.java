@@ -6,7 +6,7 @@ import java.util.Date;
 public class Test {
 
     public static void main(String[] args){
-        AuctionLot auctionLotTest = new AuctionLot(10000, "James", new Date(2022, 11, 25));
+        AuctionLot auctionLotTest = new AuctionLot(10000, "James", new Date(2022, 11, 28));
         Thread user1 = new Thread(new User("Dave", auctionLotTest, 17000));
         Thread user2 = new Thread(new User("Not Dave", auctionLotTest, 30000));
         Thread user3 = new Thread(new User("Kevin", auctionLotTest, 40000));
@@ -15,8 +15,11 @@ public class Test {
         Thread[] users = {user1, user2, user3, user4, user5};
         for (Thread user:users){
             user.start();
-            try{user.join();}
-            catch(InterruptedException e){e.printStackTrace();}
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
         System.out.println(auctionLotTest.userName);
         System.out.println(auctionLotTest.currentPrice);
