@@ -16,6 +16,10 @@ public class Client {
         this.outMessage = outMessage;
     }
 
+    public Client(Socket clientSocket){
+        this.clientSocket = clientSocket;
+    }
+
     private static class ClientWaiting implements Runnable {
         private static Client client;
 
@@ -28,11 +32,9 @@ public class Client {
             while (true) {
                 try {
                     System.out.println(client.inMessage.readUTF());
-                    if (client.bufferedReader.readLine() == "bye") {
-                        break;
-                    }
-                } catch (IOException ioException) {
+                } catch (IOException ignored) {
                 }
+
             }
         }
     }
@@ -49,7 +51,6 @@ public class Client {
             try {
                 while (!client.clientSocket.isOutputShutdown()) {
                     if (client.bufferedReader != null) {
-                        System.out.println("Write any message to others.");
                         String clientMessage = client.bufferedReader.readLine();
                         if (clientMessage.equalsIgnoreCase("bye")) {
                             //если пользователь попрощался, закрываем все потоки и чтение из буфера
