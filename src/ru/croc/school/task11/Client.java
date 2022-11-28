@@ -16,9 +16,6 @@ public class Client {
         this.outMessage = outMessage;
     }
 
-    public Client(Socket clientSocket){
-        this.clientSocket = clientSocket;
-    }
 
     private static class ClientWaiting implements Runnable {
         private static Client client;
@@ -73,7 +70,7 @@ public class Client {
     public static void main(String[] args) {
         try (
                 //задаем параметры для входа пользователя: сокет, потоки ввода и вывода, буфер для чтения
-                Socket clientSocket = new Socket("localhost", 12361);
+                Socket clientSocket = new Socket("localhost", 12000);
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
                 DataInputStream inMessage = new DataInputStream(clientSocket.getInputStream());
                 DataOutputStream outMessage = new DataOutputStream(clientSocket.getOutputStream());) {

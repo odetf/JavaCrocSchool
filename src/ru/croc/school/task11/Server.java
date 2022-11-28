@@ -4,16 +4,15 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 public class Server{
 
-    private static String breakWord = "bye"; //когда клиент "прощается" с сервером, тот перестает с ним взаимодействовать
+    private static final String breakWord = "bye"; //когда клиент "прощается" с сервером, тот перестает с ним взаимодействовать
     private static ArrayList<ClientHandler> clientsConnected;
 
     public static void main(String[] args) {
         try {
-            ServerSocket serverSocket = new ServerSocket(12361);
+            ServerSocket serverSocket = new ServerSocket(12000);
             clientsConnected = new ArrayList<>();
             while (true) {
 
@@ -35,7 +34,6 @@ public class Server{
     //класс для работы с каждым отдельным клиентом
     private static class ClientHandler implements Runnable {
         private Socket clientSocket;
-        private static HashSet<PrintWriter> writers = new HashSet<PrintWriter>(); //список подключенных клиентов
         DataOutputStream output;
         DataInputStream input;
 
