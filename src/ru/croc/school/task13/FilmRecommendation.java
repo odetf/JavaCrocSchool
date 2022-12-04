@@ -4,23 +4,22 @@ import java.util.*;
 
 public class FilmRecommendation {
 
-    public List<Integer> clientViews; //список с фильмами, которые пользователь просмотрел
-    Set<Integer> filmsToWatch = new HashSet<>(); //множество непросмотренных и рекомендуемых
-    public String bestFilmName; //"наилучшая" рекомендация, определенная алгоритмом
-    public final DataPreparation dataPreparation = new DataPreparation("src/ru/croc/school/task13/films",
-            "src/ru/croc/school/task13/views"); //подготовка данных
+    private List<Integer> clientViews; //список с фильмами, которые пользователь просмотрел
+    private Set<Integer> filmsToWatch; //множество непросмотренных и рекомендуемых
+    private String bestFilmName; //"наилучшая" рекомендация, определенная алгоритмом
+    private FilmsData filmsData; //данные по фильмам
 
 
     //конструктор, "собирающий" с помощью методов все переменные и рекмоендации
-    public FilmRecommendation(List<Integer> clientViews) {
+    public FilmRecommendation(List<Integer> clientViews, FilmsData filmsData) {
         this.clientViews = clientViews;
-        this.giveRecommendation();
-        this.bestRecommendation();
+        this.filmsData = filmsData;
+        this.filmsToWatch = new HashSet<>();
     }
 
     public void giveRecommendation() {
         //метод для рекомендуемых пользователю фильмов (которые смотрели другие похожие пользователи)
-        for (List<Integer> view : dataPreparation.filmsWatched) {
+        for (List<Integer> view : filmsData.getFilmsWatched()) {
 
             //создаю множество из уникально просмотренных фильмов какого-то пользователя из списка
             Set <Integer> setView = new HashSet<>(Set.copyOf(view));
@@ -48,7 +47,7 @@ public class FilmRecommendation {
         //для каждого фильма из отобранных ранее считаю суммарные просмотры
         for (Integer film: filmsToWatch){
             int viewCount = 0;
-            for (List<Integer> view : dataPreparation.filmsWatched){
+            for (List<Integer> view : filmsData.getFilmsWatched()){
                 if (view.contains(film)){
                     viewCount += Collections.frequency(view, film);
                 }
@@ -62,7 +61,7 @@ public class FilmRecommendation {
         int bestFilm =  Collections.max(filmViews.entrySet(), Comparator.comparingInt(Map.Entry::getValue)).getKey();
 
         //нахожу его имя
-        bestFilmName = dataPreparation.films.get(bestFilm);
+        bestFilmName = filmsData.getFilms().get(bestFilm);
     }
 
     public static void main(String[] args){
@@ -77,7 +76,11 @@ public class FilmRecommendation {
         List<Integer> clientViews = listViews.stream().map(Integer::parseInt).toList();
 
         //подаю этот список в конструктор и нахожу рекомендацию
-        FilmRecommendation filmRecommendation = new FilmRecommendation(clientViews);
+        FilmsData filmsData = new FilmsData(new DataPreparation("src/ru/croc/school/task13/films",
+                "src/ru/croc/school/task13/views"));
+        FilmRecommendation filmRecommendation = new FilmRecommendation(clientViews, filmsData);
+        filmRecommendation.giveRecommendation();
+        filmRecommendation.bestRecommendation();
         System.out.println(filmRecommendation.bestFilmName);
     }
 

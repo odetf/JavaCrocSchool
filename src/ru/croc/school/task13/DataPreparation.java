@@ -1,5 +1,7 @@
 package ru.croc.school.task13;
 
+//класс для чтения данных и их "подготовки" - превращения в нужные форматы
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,19 +15,15 @@ public class DataPreparation {
     private final Path filmsFile;
     private final Path watchesFile;
 
-    public HashMap<Integer, String> films = new HashMap<>();
-    public List<List<Integer>> filmsWatched = new ArrayList<>();
-
     //конструктор для получения данных из файла
     public DataPreparation(String filmsFilePath, String watchesFilePath) {
         filmsFile = Paths.get(filmsFilePath);
         watchesFile = Paths.get(watchesFilePath);
-        this.getFilms();
-        this.getWatches();
     }
 
-    //создаем в объекте список фильмов
-    private void getFilms() {
+    //метод для чтения файла и создания мапы существующих фильмов
+    public HashMap<Integer, String> getFilms(FilmsData filmsData) {
+        HashMap<Integer, String> films = new HashMap<>();
         try {
             List<String> filmReader = Files.readAllLines(filmsFile);
             for (String film : filmReader) {
@@ -36,10 +34,12 @@ public class DataPreparation {
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
+        return films;
     }
 
-    //создаем список "просмотров" разными пользователями
-    private void getWatches() {
+    //метод для чтения файла с пользователями и создания списка их просмотров
+    public List<List<Integer>> getWatches(FilmsData filmsData) {
+        List<List<Integer>> filmsWatched = new ArrayList<>();
         try {
             List<String> watchesReader = Files.readAllLines(watchesFile);
             for (String watch : watchesReader) {
@@ -49,5 +49,6 @@ public class DataPreparation {
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
+        return filmsWatched;
     }
 }
