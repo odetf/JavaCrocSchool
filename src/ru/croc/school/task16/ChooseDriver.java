@@ -1,6 +1,7 @@
 package ru.croc.school.task16;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class ChooseDriver {
@@ -39,27 +40,21 @@ public class ChooseDriver {
 
         taxiBase.sort((p1, p2) ->
                 //проверяю, что для p1 и p2 равны типы такси и дополнительные сервисы (типа дет кресла)
-                (p1.getTaxiType().equals(taxiType)
-                & p2.getTaxiType().equals(taxiType)
-                & p1.getInfo().contains(specialDesire))
-                & p2.getInfo().contains(specialDesire) ?
+                (p1.comparateTypeInfo(taxiType, specialDesire) & p2.comparateTypeInfo(taxiType, specialDesire)) ?
+
                 //если они равны, то выдаю значение для сравнения расстояний для p1 и p2 (умноженное на (-1), чтобы
                 // меньшее расстояние считалось за большее
                 Double.compare(Math.sqrt(Math.pow(p1.getCoord1() - coord1, 2) + Math.pow(p1.getCoord2() - coord2, 2)),
-                        Math.sqrt(Math.pow(p2.getCoord1() - coord1, 2) + Math.pow(p2.getCoord2() - coord2, 2)))*(-1) :
-                //если предыдущее условие не выполнилось, проверяю, что нужные значения совпадают для p1 и не
-                //совпадают для р2: если верно, то говорю, что p1 больше р2
-                ((p1.getTaxiType().equals(taxiType) & p1.getInfo().contains(specialDesire)) &
-                         (!p2.getTaxiType().equals(taxiType) | !p2.getInfo().contains(specialDesire))) ? 1 :
-                //если же верхнее тоже неверно, проверяю, что ни для p1, ни для p2 значения не совпадают с нужным:
-                //если это условие выполняется, говорю, что p1 и p2 равны; в противном случае -
-                //р2 больше р1
-                        (!(p1.getTaxiType().equals(taxiType)
-                                & !(p2.getTaxiType().equals(taxiType))
-                                & !(p1.getInfo().contains(specialDesire))
-                                & !(p2.getInfo().contains(specialDesire)))) ? 0 : -1);
+                        Math.sqrt(Math.pow(p2.getCoord1() - coord1, 2) + Math.pow(p2.getCoord2() - coord2, 2))) :
 
+                p1.comparateTypeInfo(taxiType, specialDesire) ? -1 :
+                        p2.comparateTypeInfo(taxiType, specialDesire) ? 1 : 0);
+
+
+        //получаем такси с наибольшим айдишником
         System.out.println(taxiBase.get(0).getId());
+
+        //можно выводить и топ-3 рекомендации такси, но у меня маленькая база, поэтому оставляю для 1
 
     }
 

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class Taxi {
+public class Taxi{
 
     private String id;
     private Double coord1;
@@ -44,4 +44,15 @@ public class Taxi {
     public String getId() {
         return id;
     }
+
+    @Override
+    public String toString(){
+        return id;
+    }
+
+    public boolean comparateTypeInfo(String type, String information){
+        return taxiType.equals(type) & info.contains(information);
+    }
+
+
 }
