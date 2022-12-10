@@ -1,6 +1,6 @@
 package ru.croc.school.task15;
 
-public class Respondent implements Comparable{
+public class Respondent implements Comparable<Respondent>{
 
     private String fio;
     private Integer age;
@@ -16,12 +16,12 @@ public class Respondent implements Comparable{
     }
 
     @Override
-    public int compareTo(Object o){
-        if (this.age == ((Respondent) o).age){
-            return this.fio.compareTo(((Respondent) o).fio);
+    public int compareTo(Respondent r){
+        if (this.age == r.age){
+            return this.fio.compareTo(r.fio);
         }
         else{
-            return this.age.compareTo(((Respondent) o).age);
+            return this.age.compareTo(r.age);
         }
     }
 }
