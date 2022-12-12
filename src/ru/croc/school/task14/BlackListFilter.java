@@ -1,7 +1,6 @@
 package ru.croc.school.task14;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Predicate;
 
 public interface BlackListFilter <T> {
