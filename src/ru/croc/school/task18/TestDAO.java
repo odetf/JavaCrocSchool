@@ -1,5 +1,7 @@
 package ru.croc.school.task18;
 
+import ru.croc.school.task17.FillDataBase;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -10,7 +12,7 @@ public class TestDAO {
 
     public static void main(String[] args) throws SQLException, DatabaseException {
 
-        Connection connection = DriverManager.getConnection("jdbc:h2:~/test", "sa", "");
+        Connection connection = DriverManager.getConnection("jdbc:h2:mem:~/test", "sa", "");
         ProductDAO productDAO = new ProductDAO(connection);
 
         //проверяем, что в базе не существует объекта с артикулом Т7
