@@ -17,7 +17,7 @@ public class CreateDatabase {
     public void createTables() {
         try (Statement st = connection.createStatement()) {
             String mainTable = "CREATE TABLE orders (" +
-                    "id INT PRIMARY KEY," +
+                    "id INT," +
                     "user_id INT REFERENCES users(id)," +
                     "article VARCHAR(255) REFERENCES products(article)," +
                     "product VARCHAR(255)," +
@@ -25,7 +25,8 @@ public class CreateDatabase {
 
             String productsTable = "CREATE TABLE products (" +
                     "article VARCHAR(255) PRIMARY KEY UNIQUE," +
-                    "name VARCHAR(255));";
+                    "name VARCHAR(255)," +
+                    "price INT);";
 
             String usersTable = "CREATE TABLE users (" +
                     "id INT PRIMARY KEY UNIQUE AUTO_INCREMENT," +
@@ -49,14 +50,14 @@ public class CreateDatabase {
             String insertUsers = "INSERT INTO users (user_login) " +
                     "VALUES ('" + user_login + "');";
 
-            if (checkUniqueness(user_login, "user_login", "users")) {
+            if (!checkUniqueness(user_login, "user_login", "users")) {
                 st.executeUpdate(insertUsers);
             }
 
             String insertGoods = "INSERT INTO products (article, name, price) " +
                     "VALUES ('" + article + "', '" + product + "', '" + price + "');";
 
-            if (checkUniqueness(article, "article", "products")) {
+            if (!checkUniqueness(article, "article", "products")) {
                 st.executeUpdate(insertGoods);
             }
 
