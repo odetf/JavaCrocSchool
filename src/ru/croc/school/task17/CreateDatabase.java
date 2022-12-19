@@ -42,15 +42,20 @@ public class CreateDatabase {
     }
 
 
-    public void insertData(String id, String user_login, String article, String product, String price) {
+    public void insertData(Order order) {
+        int id = order.getId();
+        String userLogin = order.getUser().getUserName();
+        String article = order.getProduct().getArticle();
+        String product = order.getProduct().getProductName();
+        int price = order.getProduct().getPrice();
         try (Statement st = connection.createStatement()) {
 
-            int user_id;
+            int userID = 0;
 
             String insertUsers = "INSERT INTO users (user_login) " +
-                    "VALUES ('" + user_login + "');";
+                    "VALUES ('" + userLogin + "');";
 
-            if (!checkUniqueness(user_login, "user_login", "users")) {
+            if (!checkUniqueness(userLogin, "user_login", "users")) {
                 st.executeUpdate(insertUsers);
             }
 
@@ -61,14 +66,13 @@ public class CreateDatabase {
                 st.executeUpdate(insertGoods);
             }
 
-            ResultSet rs1 = st.executeQuery("SELECT id FROM users WHERE user_login = '" + user_login + "';");
-            while (rs1.next()) {
-                user_id = rs1.getInt("id");
+            try(ResultSet rs1 = st.executeQuery("SELECT id FROM users WHERE user_login = '" + userLogin + "';")){
+                while (rs1.next()) {
+                    userID = rs1.getInt("id");
+                }
                 st.executeUpdate("INSERT INTO orders (id, user_id, article, product, price) " +
-                        "VALUES ('" + id + "', '" + user_id + "', '" + article + "', '" + product + "', '" + price + "');");
+                        "VALUES ('" + id + "', '" + userID + "', '" + article + "', '" + product + "', '" + price + "');");
             }
-
-
 
             System.out.println("Insertion completed.");
         } catch (SQLException sqlException) {
@@ -79,19 +83,11 @@ public class CreateDatabase {
     public boolean checkUniqueness(String indicatorToCheck, String type, String tableName) throws SQLException {
         String getResult = "SELECT " + type + " FROM " + tableName + " WHERE " + type + " = '" + indicatorToCheck + "';";
         try (Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(getResult);
-            return resultSet.next();
+            try(ResultSet resultSet = statement.executeQuery(getResult)){
+                return resultSet.next();
+            }
         }
     }
 
-    public ResultSet checkCreation() {
-        ResultSet rs = null;
-        try (Statement statement = connection.createStatement()) {
-            rs = statement.executeQuery("SELECT * FROM orders");
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return rs;
-    }
 
 }

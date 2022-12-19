@@ -10,7 +10,7 @@ import java.util.List;
 
 public class StoreData {
 
-    private List<List<String>> ordersData;
+    private List<Order> ordersData;
     private Path filepath;
 
     public StoreData (Path path){
@@ -22,7 +22,11 @@ public class StoreData {
         try{
             List <String> ordersReader = Files.readAllLines(filepath);
             for (String order:ordersReader){
-                ordersData.add(Arrays.stream(order.split(",")).toList());
+                String[] orderItems = order.split(",");
+                User user = new User(orderItems[1]);
+                Product product = new Product(orderItems[2], orderItems[3], Integer.parseInt(orderItems[4]));
+                Order newOrder = new Order(Integer.parseInt(orderItems[0]), user, product);
+                ordersData.add(newOrder);
             }
         }
         catch(IOException ioException){
@@ -30,7 +34,7 @@ public class StoreData {
         }
     }
 
-    public List<List<String>> getOrdersData() {
+    public List<Order> getOrdersData() {
         return ordersData;
     }
 }

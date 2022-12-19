@@ -10,7 +10,7 @@ import java.util.Arrays;
 
 public class TestDAO {
 
-    public static void main(String[] args) throws SQLException, DatabaseException {
+    public static void main(String[] args) throws SQLException{
 
         Connection connection = DriverManager.getConnection("jdbc:h2:mem:~/test", "sa", "");
         ProductDAO productDAO = new ProductDAO(connection);

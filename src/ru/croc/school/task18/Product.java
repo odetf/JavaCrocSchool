@@ -2,9 +2,9 @@ package ru.croc.school.task18;
 
 public class Product {
 
-    private String article;
-    private String name;
-    private int price;
+    private final String article;
+    private final String name;
+    private final int price;
 
     public Product(String article, String name, int price){
         this.article = article;
